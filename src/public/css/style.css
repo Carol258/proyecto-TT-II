@@ -1,0 +1,20 @@
+/* VISTA DE INICIO */
+.main-header {
+    position: relative;
+    background: url(/img/welcome.jpg);
+    background-size: cover;
+    min-height: 675px;
+}
+
+.background-overlay {
+    position: absolute;
+    background: rgb(48, 51, 107, .7);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.space-header {
+    padding-top: 8rem;
+}

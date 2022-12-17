@@ -1,0 +1,74 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <h1 class="text-center">Actualizar módulo</h1>
+        <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6 col-xxl-6 align-self-center">
+
+            <form action='/modulesCourse/updateModuleDone/{{module._id}}' id="hola" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="nameModule" class="form-label">Nombre del módulo</label>
+                    <input type="text" name="nameModule" id="nameModule" class="form-control" value="{{module.nameModule}}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="nameAuthor" class="form-label">Nombre del Autor</label>
+                    <input type="text" name="nameAuthor" id="nameAuthor" class="form-control" value="{{module.nameAuthor}}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="descriptionModule" class="form-label">Descripción del módulo</label>
+                    <textarea name="descriptionModule" id="descriptionModule" cols="30" rows="3" class="form-control"
+                        required>{{module.descriptionModule}}</textarea>
+                </div>
+                <div class="mb-3" id="file" style="display: none">
+                    <label for="file" class="form-label">Añadir videos del modulo</label>
+                    <input type="file" name="file" id="fileInput" class="form-control" accept="video/*" multiple >
+                </div>
+                <div class="mb-3" id="img" style="display: none">
+                    <label for="img" class="form-label">Añadir una imagen de miniatura</label>
+                    <input type="file" name="img" id="imgInput" class="form-control" accept="image/*" >
+                </div>
+
+
+                <div class="d-grid gap-4 d-md-flex justify-content-center py-4">
+                    <button class="btn btn-success" id="updateVideos" type="submit">Finalizar actualización</button>
+                </div>
+            </form>
+
+
+             <div class="d-grid gap-2 d-md-flex justify-content-center">
+                <button class="btn btn-primary" id="addInputVideos" >Actualizar videos e imagen</button>                
+            </div>
+
+           
+        </div>
+    </div>
+</div>
+
+<script>
+
+    const btnVideos = document.getElementById("addInputVideos");
+    btnVideos.onclick = anadirCamposVideosImagen;
+
+    function anadirCamposVideosImagen() {   
+        var file = document.getElementById("file");
+        var img = document.getElementById("img");
+        var fileInput = document.getElementById("fileInput");
+        var imgInput = document.getElementById("imgInput");
+
+        if(file.style.display === 'none' && img.style.display === 'none') {
+            file.style.display = 'block';
+            img.style.display = 'block';
+            // console.log(fileInput.value);
+            // console.log(imgInput.value);
+            btnVideos.textContent = "No actualizar videos";
+        } else {
+            file.style.display = 'none';
+            img.style.display = 'none';
+            // console.log(fileInput.value);
+            // console.log(imgInput.value);
+            fileInput.value = "";
+            imgInput.value = ""
+            btnVideos.textContent = "Actualizar videos e imagen";
+        }
+    }
+
+
+</script>

@@ -1,0 +1,32 @@
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6 col-xxl-5 align-self-center">
+            <h1 class="text-center mb-3 mt-2">Actualizar Datos</h1>
+            <form action="/viewsUser/update/{{user._id}}?_method=PUT" method="POST">
+                <div class="mb-3">
+                    <label for="emailUser" class="form-label">Email</label>
+                    <input type="text" name="emailUser" id="emailUser" class="form-control" value="{{user.email}}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="nameUser" class="form-label">Nombre</label>
+                    <input type="text" name="nameUser" id="nameUser" class="form-control" value="{{user.name}}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="surnameUser" class="form-label">Apellido</label>
+                    <input type="text" name="surnameUser" id="surnameUser" class="form-control" value="{{user.surname}}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="passwordUser" class="form-label">Actualizar Contraseña</label>
+                    <input type="password" name="passwordUser" id="passwordUser" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="confirm_password" class="form-label">Confirmar Contraseña</label>
+                    <input type="password" name="confirm_password" id="confirm_password" class="form-control" required>
+                </div>
+                <div class="d-grid gap-3 col-6 mx-auto mb-4">
+                    <button class="btn btn-success" type="submit">Actualizar Datos</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

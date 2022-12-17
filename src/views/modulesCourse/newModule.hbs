@@ -1,0 +1,228 @@
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6 col-xxl-5 align-self-center" id="subir">
+            <h1 class="text-center mb-3 mt-2">Crear Módulo</h1>
+
+            <form action="/modulesCourse/newModule" method="POST" enctype="multipart/form-data" id="formulario">
+                <div class="mb-3">
+                    <label for="nameModule" class="form-label">Nombre del módulo</label>
+                    <input type="text" name="nameModule" id="nameModule" class="form-control" required>
+                    <div class="invalid-feedback" id="invalid_message_nameModule" style="display: none">
+                        El nombre del módulo debe tener entre 4 y 40 dígitos. No puede contener puntos finales, solo números, letras y acentos.
+                    </div>
+                    <div class="valid-feedback" id="valid_message_nameModule" style="display: none">
+                        ¡Corecto!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="nameAuthor" class="form-label">Nombre del Autor</label>
+                    <input type="text" name="nameAuthor" id="nameAuthor" class="form-control" required>
+                    <div class="invalid-feedback" id="invalid_message_nameAuthor" style="display: none">
+                        El nombre del autor debe tener entre 4 y 30 dígitos. No puede contener puntos finales, solo letras y acentos.
+                    </div>
+                    <div class="valid-feedback" id="valid_message_nameAuthor" style="display: none">
+                        ¡Corecto!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="descriptionModule" class="form-label">Descripción del módulo</label>
+                    <input type="textarea" name="descriptionModule" id="descriptionModule" cols="30" rows="3"
+                        class="form-control" required>
+                    </input>
+                    <div class="invalid-feedback" id="invalid_message_descriptionModule" style="display: none">
+                        La descripción debe tener entre 40 y 80 dígitos. No puede contener puntos finales, solo números, letras y acentos.
+                    </div>
+                    <div class="valid-feedback" id="valid_message_descriptionModule" style="display: none">
+                        ¡Corecto!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="file" class="form-label">Añadir videos del modulo</label>
+                    <input type="file" name="file" id="file" class="form-control" accept="video/*"
+                        aria-label="file example" multiple required>
+                    <div class="invalid-feedback" id="invalid_message_file" style="display: none">
+                        Debe seleccionar mínimo dos archivos (vídeos).
+                    </div>
+                    <div class="valid-feedback" id="valid_message_file" style="display: none">
+                        ¡Corecto!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="img" class="form-label">Añadir una imagen de miniatura</label>
+                    <input type="file" name="img" id="img" class="form-control" accept="image/*" required>
+                    <div class="invalid-feedback" id="invalid_message_img" style="display: none">
+                        Debe seleccionar una imagen como miniatura del módulo.
+                    </div>
+                    <div class="valid-feedback" id="valid_message_img" style="display: none">
+                        ¡Corecto!
+                    </div>
+                </div>
+                {{!-- <div class="mb-3">
+                    <label for="docs" class="form-label">Añadir archivos (Opcional)</label>
+                    <input type="file" name="docs" id="docs" class="form-control" 
+                        aria-label="file example" multiple>
+                </div> --}}
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" value="si" id="check" name="cuestionario">
+                    <label class="form-check-label" for="check">
+                        Agregar un cuestionario
+                    </label>
+                </div>
+                <div class="d-grid gap-3 col-6 mx-auto mb-5">
+                    <button class="btn btn-success" type="submit" id="btn-enviar" disabled>Crear módulo</button>
+                </div>
+            </form>
+
+        </div>
+
+        <div class="col-12 mt-5" id="cargar" style="display: none">
+            <p class="display-4 text-center mt-5">Cargando videos...</p>
+            <div class="d-flex justify-content-center mt-5 mb-3">
+                <div class="spinner-grow text-primary mx-3" role="status" style="width: 4rem; height: 4rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-primary mx-3" role="status" style="width: 4rem; height: 4rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-primary mx-3" role="status" style="width: 4rem; height: 4rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-primary mx-3" role="status" style="width: 4rem; height: 4rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<script>
+    const btn_enviar = document.getElementById("btn-enviar");
+    const formulario_subir = document.getElementById("subir");
+    const cargar = document.getElementById("cargar");
+    //const file = document.getElementById("file");
+    const expresiones = {
+        nombreModulo: /^[a-zA-Z0-9À-ÿ\s]{4,40}$/ ,// Letras, números y espacios, pueden llevar acentos sin punto final.
+        nombreAutor:  /^[a-zA-ZÀ-ÿ\s]{4,30}$/, // Letas y espacios, pueden llevar acentos sin punto final.
+        descripcion: /^[a-zA-Z0-9À-ÿ\s]{30,80}$/ // Letras, números, mínimo 30 dígitos sin punto final.
+    }
+
+    // INPUTS
+    const formulario = document.getElementById("formulario");
+    const inputs = document.querySelectorAll("#formulario input");
+    
+
+    const campos = {
+        nameModule: false,
+        nameAuthor: false,
+        descriptionModule: false,
+        file: false,
+        img: false
+    }
+
+
+    const validarFormulario = (e) => {
+        switch (e.target.name) {
+            case "nameModule":
+                validarInput(expresiones.nombreModulo, e.target, 'nameModule');
+                break;
+            case "nameAuthor":
+                validarInput(expresiones.nombreAutor, e.target, 'nameAuthor');
+                break;
+            case "descriptionModule":
+                validarInput(expresiones.descripcion, e.target, 'descriptionModule');
+                break;
+            case "file":
+                validarInputFile(e.target, 'file');
+                break;
+            case "img":
+                validarInputImg(e.target, 'img');
+                break;
+        }
+
+        if (campos.nameModule && campos.nameAuthor && campos.descriptionModule && campos.file && campos.img) {
+            btn_enviar.disabled = false;
+        } else {
+            btn_enviar.disabled = true;
+        }
+    }
+
+
+
+    const validarInput = (expresion ,input, campo) => {
+        if (expresion.test(input.value)) {
+            document.getElementById(`${campo}`).classList.add('is-valid');
+            document.getElementById(`${campo}`).classList.remove('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "none";
+            document.getElementById(`valid_message_${campo}`).style.display = "block";
+            campos[campo] = true;
+        } else {
+            document.getElementById(`${campo}`).classList.remove('is-valid');
+            document.getElementById(`${campo}`).classList.add('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "block";
+            document.getElementById(`valid_message_${campo}`).style.display = "none";
+            campos[campo] = false;
+        }
+    }
+
+    const validarInputFile = (input, campo) => {
+        if (input.files.length >= 2) {
+            document.getElementById(`${campo}`).classList.add('is-valid');
+            document.getElementById(`${campo}`).classList.remove('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "none";
+            document.getElementById(`valid_message_${campo}`).style.display = "block";
+            campos[campo] = true;
+
+        } else if (input.files.length == 1) {
+            document.getElementById(`${campo}`).classList.remove('is-valid');
+            document.getElementById(`${campo}`).classList.add('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "block";
+            document.getElementById(`valid_message_${campo}`).style.display = "none";
+            campos[campo] = false;
+        }
+    }
+
+    const validarInputImg = (input, campo) => {
+        if (input.files.length == 1) {
+            document.getElementById(`${campo}`).classList.add('is-valid');
+            document.getElementById(`${campo}`).classList.remove('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "none";
+            document.getElementById(`valid_message_${campo}`).style.display = "block";
+            campos[campo] = true;
+
+        } else if (input.files.length != 1){
+            document.getElementById(`${campo}`).classList.remove('is-valid');
+            document.getElementById(`${campo}`).classList.add('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "block";
+            document.getElementById(`valid_message_${campo}`).style.display = "none";
+            campos[campo] = false;
+        }
+    }
+
+
+    inputs.forEach((input) => {
+        input.addEventListener('keyup', validarFormulario);
+        input.addEventListener('blur', validarFormulario)
+    });
+
+
+
+    // LOADING
+    function mostrar() {
+        // PENDIENTE: REALIZAR UNA VALIDACIÓN DE CAMPOS
+        if (campos.nameModule && campos.nameAuthor && campos.descriptionModule && campos.img && campos.file) {
+            btn_enviar.removeAttribute("disabled")
+            formulario_subir.style.display = "none";
+            formulario_subir.setAttribute('disabled', '');
+            cargar.style.display = "block";
+        } else {
+            console.log("LLENAR CAMPOS");
+        }
+    }
+
+    btn_enviar.onclick = mostrar;
+
+
+</script>

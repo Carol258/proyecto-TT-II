@@ -1,0 +1,166 @@
+<div class="container ">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6 col-xxl-5  align-self-center">
+            <div class="card border-2 shadow ">
+                <div class="text-center my-3"><img src="/img/user.png" alt=""></div>
+                <div class="card-body">
+                    <h3 class="card-title text-center">Registro</h3>
+                    <form action="/usersLogin/signup" method="POST" id="formSignup">
+                        <div class="mx-5 ">
+                            <label for="name" class="form-label">Nombre(s)</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="nombre"
+                                value="{{name}}" required>
+                            <div class="invalid-feedback" id="invalid_message_name" style="display: none">
+                                Solo se puede ingresar letras minúsculas y mayúsculas con o sin acentos.
+                            </div>
+                            <div class="valid-feedback" id="valid_message_name" style="display: none">
+                                ¡Corecto!
+                            </div>
+                        </div>
+                        <div class="mx-5 mt-2">
+                            <label for="surname" class="form-label">Apellidos</label>
+                            <input type="text" id="surname" name="surname" class="form-control" placeholder="apellidos"
+                                value="{{surname}}" required>
+                            <div class="invalid-feedback" id="invalid_message_surname" style="display: none">
+                                Solo se puede ingresar letras minúsculas y mayúsculas con o sin acentos.
+                            </div>
+                            <div class="valid-feedback" id="valid_message_surname" style="display: none">
+                                ¡Corecto!
+                            </div>
+                        </div>
+                        <div class="mx-5 mt-2">
+                            <label for="email" class="form-label">Correo electrónico</label>
+                            <input type="email" id="email" name="email" class="form-control"
+                                placeholder="ejem. nombre@correo.com" value="{{email}}" required>
+                            <div class="invalid-feedback" id="invalid_message_email" style="display: none">
+                                El correo electrónico solo puede contener letras, números, puntos, guiones y guión bajo.
+                            </div>
+                            <div class="valid-feedback" id="valid_message_email" style="display: none">
+                                ¡Corecto!
+                            </div>
+                        </div>
+                        <div class="mx-5 mt-2 ">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" id="password" name="password" class="form-control"
+                                aria-describedby="passwordHelpBlock" value="{{password}}" required>
+                            <div class="invalid-feedback" id="invalid_message_password" style="display: none">
+                                La contraseña debe tener entre 4 y 12 caracteres que pueden ser letras y números.
+                            </div>
+                            <div class="valid-feedback" id="valid_message_password" style="display: none">
+                                ¡Corecto!
+                            </div>
+                        </div>
+                        <div class="mx-5 mt-2 mb-3">
+                            <label for="confirm_password" class="form-label">Confirmar contraseña</label>
+                            <input type="password" id="confirm_password" name="confirm_password" class="form-control"
+                                aria-describedby="passwordHelpBlock" value="{{confirm_password}}" required>
+                            <div class="invalid-feedback" id="invalid_message_confirm_password" style="display: none">
+                                Ambas contraseñas deben coincidir.
+                            </div>
+                            <div class="valid-feedback" id="valid_message_confirm_password" style="display: none">
+                                ¡Corecto!
+                            </div>
+                        </div>
+                        <div class="d-grid gap-3 col-6 mx-auto mb-4">
+                            <button class="btn btn-primary" id="btn-signup" disabled>Crear cuenta</button>
+                        </div>
+                    </form>
+                    <div class="text-center">
+                        <p>Si ya tiene una cuenta, inicie sesión <a href='/usersLogin/signin'>aquí</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const btn_signup = document.getElementById("btn-signup");
+    const formulario_signup = document.getElementById("formSignup");
+
+    const expresiones = {
+        nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
+        password: /^.{4,12}$/, // 4 a 12 digitos.
+        correo: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+    }
+
+
+    // INPUTS FORMULARIO
+    const inputs = document.querySelectorAll("#formSignup input");
+    const campos = {
+        name: false,
+        surname: false,
+        email: false,
+        password: false
+    }
+
+
+    const validarFormulario = (e) => {
+        switch (e.target.name) {
+            case "name":
+                validarInput(expresiones.nombre, e.target, 'name');
+                break;
+            case "surname":
+                validarInput(expresiones.nombre, e.target, 'surname');
+                break;
+            case "email":
+                validarInput(expresiones.correo, e.target, 'email');
+                break;
+            case "password":
+                validarInput(expresiones.password, e.target, 'password');
+                validarPassword2();
+                break;
+            case "confirm_password":
+                validarPassword2();
+                break;
+        }
+
+        if(campos.name && campos.surname && campos.email && campos.password) {
+            btn_signup.disabled = false;
+        } else {
+            btn_signup.disabled = true;
+        }
+    }
+
+    const validarInput = (expresion, input, campo) => {
+        
+        if (expresion.test(input.value)) {
+            document.getElementById(`${campo}`).classList.add('is-valid');
+            document.getElementById(`${campo}`).classList.remove('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "none";
+            document.getElementById(`valid_message_${campo}`).style.display = "block";
+            campos[campo] = true;
+        } else {
+            document.getElementById(`${campo}`).classList.remove('is-valid');
+            document.getElementById(`${campo}`).classList.add('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "block";
+            document.getElementById(`valid_message_${campo}`).style.display = "none";
+            campos[campo] = false;
+        }
+    }
+
+    const validarPassword2 = () => {
+        const inputPassword1 = document.getElementById('password');
+        const inputPassword2 = document.getElementById('confirm_password');
+
+        if (inputPassword1.value !== inputPassword2.value) {
+            document.getElementById(`confirm_password`).classList.remove('is-valid');
+            document.getElementById(`confirm_password`).classList.add('is-invalid');
+            document.getElementById(`invalid_message_confirm_password`).style.display = "block";
+            document.getElementById(`valid_message_confirm_password`).style.display = "none";
+            campos['password'] = false;
+        } else {
+            document.getElementById(`confirm_password`).classList.add('is-valid');
+            document.getElementById(`confirm_password`).classList.remove('is-invalid');
+            document.getElementById(`invalid_message_confirm_password`).style.display = "none";
+            document.getElementById(`valid_message_confirm_password`).style.display = "block";
+            campos['password'] = true;
+        }
+    }
+
+    inputs.forEach((input) => {
+        input.addEventListener('keyup', validarFormulario);
+        input.addEventListener('blur', validarFormulario)
+    });
+</script>

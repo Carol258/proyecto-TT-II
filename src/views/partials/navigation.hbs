@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white px-3">
+    <a class="navbar-brand" href="/">
+        <h2 class="text">Aplicación Web</h3>
+    </a>
+    <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#hiddenNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="hiddenNavbar">
+        <div class="navbar-nav ms-auto">
+            {{#if (isAlum user.rol)}}
+            <p class="h6"><a href="/viewsUser/user" class="nav-item nav-link text-primary">Inicio</a></p>
+            <p class="h6"><a href="/viewsUser/showProgress" class="nav-item nav-link text-primary ">Visualizar progreso</a></p>
+            {{!-- <a href="#" class="nav-item nav-link text-primary">Cursos</a> --}}
+            <p class="h6"><a href="/viewsUser/update" class="nav-item nav-link text-primary ">Modificar datos personales</a></p>
+            <p class="h6"><a href="/users/logout" class="nav-item nav-link text-primary ">Cerrar sesión</a></p>
+            {{else if (isAdmin user.rol)}}
+            <p class="h6"><a href="/viewsAdmi/admi" class="nav-item nav-link text-primary ">Inicio</a></p>
+            {{!-- Aqui va a cambiar el href a /modulesCourse/add --}}
+            <p class="h6"><a href="/viewsAdmi/showUsers" class="nav-item nav-link text-primary ">Usuarios registrados</a></p>
+            <p class="h6"><a href="/modulesCourse/add" class="nav-item nav-link text-primary ">Crear módulo</a></p>
+            <p class="h6"><a href="/modulesCourse/resourcesModules" class="nav-item nav-link text-primary ">Recursos</a></p>
+            {{!-- <a href="#" class="nav-item nav-link text-primary">Actualizar módulo</a> --}}
+            <p class="h6"><a href="/users/logout" class="nav-item nav-link text-primary ">Cerrar sesión</a></p>
+            {{else}}
+            <p class="h6"><a href="/usersLogin/signup" class="nav-item nav-link text-primary ">Crear cuenta</a></p>
+            <p class="h6"><a href="/usersLogin/signin" class="nav-item nav-link text-primary ">Iniciar sesión</a></p>
+            {{/if}}
+        </div>
+    </div>
+</nav>

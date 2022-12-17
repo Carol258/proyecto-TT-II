@@ -1,0 +1,36 @@
+<div class="container mb-5">
+
+    <div class="row justify-content-left">
+        <div class="col align-self-center">
+            <h1 class="text-center mb-3 mt-2">Cuestionario</h1>
+
+            <form action="/modulesCourse/results" method="POST" class="mx-5">
+                {{#each preguntas}}
+                <h3 class=" mb-3 mt-2">{{this.[0]}}</h3>
+                <div class="row my-4">
+                    <div class="col"><label class="form-label">A&#41; {{this.[1]}}</label></div>
+                    <div class="col"><label class="form-label">B&#41; {{this.[2]}}</label></div>
+                    <div class="col"><label class="form-label">C&#41; {{this.[3]}}</label></div>
+                    <div class="col"><label class="form-label">D&#41; {{this.[4]}}</label></div>
+                </div>
+
+                <div class="form-floating">
+                    <select class="form-select" name="respuestas" id="floatingSelect" aria-label="Floating label select example" required>
+                        {{!-- <option selected>Eliga una de las opciones</option> --}}
+                        <option value="A" selected>A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                    <label for="floatingSelect">Selecciona una opción</label>
+                </div>
+                {{/each}}
+                <div class="d-grid gap-2 d-md-flex justify-content-center pt-3">
+                    <button type="submit" class="btn btn-primary mt-4 btn-lg">Finalizar cuestionario</button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+
+</div>

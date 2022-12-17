@@ -1,0 +1,31 @@
+<div class="container ">
+    <div class="row justify-content-center ">
+        <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6 col-xxl-5 align-self-center">
+            <div class="card border-2 shadow ">
+                <div class="text-center mt-3"><img src="/img/user.png" alt=""></div>
+                <div class="card-body">
+                    <h3 class="card-title text-center">Iniciar sesión</h3>
+                    <form action="/usersLogin/signin" method="POST">
+                        <div class="mx-5 mt-2">
+                            <label for="email" class="form-label">Correo electrónico</label>
+                            <input type="email" id="email" name="email" class="form-control"
+                                placeholder="ejem. nombre@correo.com" value="{{email}}" required>
+                        </div>
+                        <div class="mx-5 mt-2 mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" id="password" name="password" class="form-control"
+                                aria-describedby="passwordHelpBlock" required>
+                        </div>
+                        <div class="d-grid gap-3 col-6 mx-auto mb-4">
+                            <button class="btn btn-primary">Iniciar sesión</button>
+                        </div>
+                    </form>
+                    <div class="text-center">
+                        <p>Si no tiene una cuenta, puede crear una dando click <a href='/usersLogin/signup'>aqui</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

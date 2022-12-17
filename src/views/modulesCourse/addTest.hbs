@@ -1,0 +1,194 @@
+<div class="container mt-3 mb-5">
+    <div class="row justify-content-center">
+
+        <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6 col-xxl-5 align-self-center">
+            <h1 class="text-center mb-3 mt-2">Cuestionario del módulo</h1>
+            <form action='/modulesCourse/addTest' id="formQuestions" method="POST">
+
+                <div class="d-grid gap-3 col-6 mx-auto mb-5">
+                    <button class="btn btn-success" type="submit">Enviar</button>
+                </div>
+            </form>
+            
+            <div class="d-grid gap-2 d-md-flex justify-content-center">
+                <button class="btn btn-success" id="addQuestion">Añadir pregunta</button>
+                <button class="btn btn-success" id="deleteQuestion">Eliminar pregunta</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let numberQuestion = [];
+    var number = 0;
+    const form = document.getElementById("formQuestions");
+
+    let btnAdd = document.getElementById("addQuestion");
+    btnAdd.onclick = addQuestion;
+
+    let btnDelete = document.getElementById("deleteQuestion");
+    btnDelete.onclick = deleteQuestion;
+
+
+    function addQuestion() {
+        
+        number++;
+        console.log(number);
+        // *************** PREGUNTA ****************
+        // DIV
+        var div = document.createElement('div');
+        div.setAttribute('class', 'mb-3');
+        // LABEL (PREGUNTA)
+        var labelQuestion = document.createElement('label');
+        labelQuestion.setAttribute('for', `pregunta`);
+        labelQuestion.setAttribute('class', 'form-label');
+        labelQuestion.textContent = `pregunta ${number}`; 
+
+
+        // INPUT (PREGUNTA)
+        var inputQuestion = document.createElement('input');
+        inputQuestion.setAttribute('type', 'text');
+        inputQuestion.setAttribute('class', 'form-control');
+        inputQuestion.setAttribute('name', `pregunta${number}`);
+        inputQuestion.setAttribute('id', `pregunta`);
+        inputQuestion.setAttribute('required', ``); 
+
+
+        // *************** RESPUESTAS ****************
+        // ROW
+        var row = document.createElement('div');
+        row.setAttribute('class', 'row mt-3');
+        // row.setAttribute('id', `respuestas${number}`);
+
+        // COL
+        var col1 = document.createElement('div');
+        col1.setAttribute('class', 'col-3'); 
+
+        var col2 = document.createElement('div');
+        col2.setAttribute('class', 'col-3'); 
+
+        var col3 = document.createElement('div');
+        col3.setAttribute('class', 'col-3'); 
+
+        var col4 = document.createElement('div');
+        col4.setAttribute('class', 'col-3'); 
+
+        // (INPUT) RESPUESTAS
+        var inputAnswer1 = document.createElement('input')
+        inputAnswer1.setAttribute('type', 'text');
+        inputAnswer1.setAttribute('class', 'form-control');
+        inputAnswer1.setAttribute('name', `pregunta${number}`);
+        inputAnswer1.setAttribute('required', "");
+        
+        var inputAnswer2 = document.createElement('input')
+        inputAnswer2.setAttribute('type', 'text');
+        inputAnswer2.setAttribute('class', 'form-control');
+        inputAnswer2.setAttribute('name', `pregunta${number}`);
+        inputAnswer2.setAttribute('required', "");
+
+        var inputAnswer3 = document.createElement('input')
+        inputAnswer3.setAttribute('type', 'text');
+        inputAnswer3.setAttribute('class', 'form-control');
+        inputAnswer3.setAttribute('name', `pregunta${number}`);
+        inputAnswer3.setAttribute('required', "");
+
+        var inputAnswer4 = document.createElement('input')
+        inputAnswer4.setAttribute('type', 'text');
+        inputAnswer4.setAttribute('class', 'form-control');
+        inputAnswer4.setAttribute('name', `pregunta${number}`);
+        inputAnswer4.setAttribute('required', "");
+
+        col1.insertAdjacentElement('beforeend',inputAnswer1);
+        col2.insertAdjacentElement('beforeend',inputAnswer2);
+        col3.insertAdjacentElement('beforeend',inputAnswer3);
+        col4.insertAdjacentElement('beforeend',inputAnswer4);
+
+        row.insertAdjacentElement('beforeend', col1);
+        row.insertAdjacentElement('beforeend', col2);
+        row.insertAdjacentElement('beforeend', col3);
+        row.insertAdjacentElement('beforeend', col4);
+
+
+        // OPCIONES
+        var divOptions = document.createElement('div');
+        divOptions.setAttribute('class', 'mt-3 mb-3');
+
+        // Select
+        var select = document.createElement('select');
+        select.setAttribute('class', 'form-select');
+        select.setAttribute('required', '');
+        select.setAttribute('name', `pregunta${number}`)
+        // Opciones
+        var defaultOption = document.createElement('option');
+        defaultOption.setAttribute('selected', '');
+        defaultOption.setAttribute('disabled', '');
+        defaultOption.setAttribute('value', '');
+        defaultOption.textContent = 'Respuesta';
+
+        var optionA = document.createElement('option');
+        optionA.setAttribute('value', 'A');
+        optionA.textContent = "A";
+
+        var optionB = document.createElement('option');
+        optionB.setAttribute('value', 'B');
+        optionB.textContent = "B";
+
+        var optionC = document.createElement('option');
+        optionC.setAttribute('value', 'C');
+        optionC.textContent = "C";
+
+        var optionD = document.createElement('option');
+        optionD.setAttribute('value', 'D');
+        optionD.textContent = "D";
+
+
+        select.insertAdjacentElement('beforeend', defaultOption);
+        select.insertAdjacentElement('beforeend', optionA);
+        select.insertAdjacentElement('beforeend', optionB);
+        select.insertAdjacentElement('beforeend', optionC);
+        select.insertAdjacentElement('beforeend', optionD);
+
+        divOptions.insertAdjacentElement('beforeend', select)
+
+        div.insertAdjacentElement('beforeend', labelQuestion);
+        div.insertAdjacentElement('beforeend', inputQuestion);
+        div.insertAdjacentElement('beforeend', row);
+        div.insertAdjacentElement('beforeend', divOptions);
+        form.appendChild(div);
+        
+    
+       
+    }   
+
+    function deleteQuestion() {
+        if(number == 0) {
+            console.log("No hay más elementos");
+        } else {
+            number--;
+            console.log(number)
+            form.removeChild(form.lastElementChild);
+        }
+    }
+
+</script>
+
+
+{{!-- <script>
+    let btn = document.getElementById("boton");
+    btn.onclick = add;
+    let btnEliminar = document.getElementById("botonEliminar");
+    btnEliminar.onclick = deleteE;
+
+
+    function add() {
+        const div = document.createElement("div");
+        div.textContent = "Esto es un div insertado "
+        const test = document.getElementById("test");
+        test.appendChild(div);
+    }
+    function deleteE() {
+        console.log("Delete");
+        const test = document.getElementById("test");
+        test.removeChild(test.lastElementChild);
+    }
+</script> --}}

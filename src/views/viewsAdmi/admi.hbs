@@ -1,0 +1,68 @@
+<div class="container mb-3">
+    <h1 class="text-center">Bienvenido {{user.name}} {{user.surname}}</h1>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            {{#if modules}}
+            <h3 class="text-center mb-4">Módulos creados recientemente</h3>
+            <ul class="list-group">
+                {{#each modules}}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="px-3">
+                        <h5 class="mb-1 fw-bold">Curso: {{nameModule}}</h5>
+                        <h5 class="mb-1">Autor: {{nameAuthor}}</h5>
+                        <p class="mb-1">Descripción: {{descriptionModule}}</p>
+                        <p class="mb-1">Fecha de creación:{{createdAt}}</p>
+                    </div>
+                    <div class="px-3 justify-content-between">
+
+                        
+                        <button class="btn btn-lg " type="button" >
+                            <a href="/modulesCourse/updateModule/{{_id}}"><i class="bi bi-pencil-square text-primary" ></i></a>
+                        </button>
+                        
+                        <button class="btn btn-lg" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{eliminarEspacios nameModule}}">
+                            <i class="bi bi-trash3-fill text-danger"></i>
+                        </button>
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal{{eliminarEspacios nameModule}}" tabindex="-1" aria-labelledby="exampleModalLabel{{eliminarEspacios nameModule}}"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel{{eliminarEspacios nameModule}}">Confirmación de eliminación</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Desea eliminar el módulo "{{nameModule}}"?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                        <a href="/modulesCourse/deleteModule/{{_id}}" class="text-white"><button type="button" class="btn btn-primary">Eliminar</button></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        {{!-- <h3><a href="/modulesCourse/updateModule/{{_id}}"><i
+                                    class="bi bi-pencil-square text-primary"></i></a></h3> --}}
+                        {{!-- <h3><a href="/modulesCourse/deleteModule/{{_id}}">
+                                <i class="bi bi-trash3-fill text-danger"></i>
+                            </a>
+                        </h3> --}}
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+            
+            {{else}}
+            <h1 class="display-4 text-center mt-5 pt-5">No hay módulos subidos por el momento.</h1>
+            {{/if}}
+        </div>
+    </div>
+</div>

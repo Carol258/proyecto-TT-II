@@ -1,0 +1,34 @@
+<div class="container mb-3">
+    <div class="row  justify-content-center">
+        <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10 col-xxl-8 align-self-center">
+            <h1 class="text-center mb-5 mt-2">Usuarios registrados</h1>
+            <table class="table">
+                <thead>
+                    <tr class="table-primary">
+                        <th scope="col" class=" text-center">#</th>
+                        <th scope="col" class="fw-bold fs-5 text-center">Nombre(s)</th>
+                        <th scope="col" class="fw-bold fs-5 text-center">Apellido(s)</th>
+                        <th scope="col" class="fw-bold fs-5 text-center">Correo electrónico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each users}}
+                    <tr>
+                        <th scope="row" class="text-center">{{@index}}</th>
+                        <td >{{name}}</td>
+                        <td >{{surname}}</td>
+                        <td class="text-center">{{email}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+
+
+            {{!-- {{#each users}}
+            <h1>{{name}}</h1>
+            <h2>{{surname}}</h2>
+            {{/each}} --}}
+        </div>
+    </div>
+</div>
