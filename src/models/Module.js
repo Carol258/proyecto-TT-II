@@ -11,7 +11,8 @@ const ModuleScheme = new Schema({
     nameVideos: {type: Array},
     dataVideos: {type: Array},
     img: {type: String},
-    test: {type: Array}
+    test: {type: Array},
+    category: {type: String}
 }, {
     timestamps: true
 });

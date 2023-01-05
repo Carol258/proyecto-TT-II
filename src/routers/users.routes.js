@@ -1,6 +1,13 @@
 // RUTAS USUARIO
 const { Router } = require("express");
-const { renderMainViewUser, renderUpdateForm, updateUser, showProgress, logout } = require("../controllers/users.controller");
+const { 
+    renderMainViewUser, 
+    renderUpdateForm, 
+    updateUser, 
+    showProgress, 
+    logout,
+    aboutCourses 
+} = require("../controllers/users.controller");
 const router = Router();
 const { isAuthenticated } = require('../helpers/auth');
 
@@ -23,6 +30,9 @@ router.put('/viewsUser/update/:id', isAuthenticated, updateUser);
 // MOSTRAR AVANCES
 router.get('/viewsUser/showProgress', isAuthenticated, showProgress);
 
+
+// ACERCA DE LA APP
+router.get('/about/aboutCourses', aboutCourses)
 
 
 module.exports = router;

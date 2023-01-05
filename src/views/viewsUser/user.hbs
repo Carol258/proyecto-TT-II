@@ -1,12 +1,39 @@
 <div class="container mt-3">
-    <h1 class="text-center mb-5">Bienvenido {{user.name}} {{user.surname}}</h1>
-    <div class="row mb-3">
+    <h1 class="text-center mb-3">Bienvenido {{user.name}} {{user.surname}}</h1>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            {{#if hardware}}
+                <p class="h5"><a class="nav-link active" href="/modulesCourse/filterModules/Hardware">Hardware</a></p>
+            {{else}}
+                <p class="h5"><a class="nav-link" href="/modulesCourse/filterModules/Hardware">Hardware</a></p>
+            {{/if}}
+        </li>
+        <li class="nav-item">
+            {{#if software}}
+                <p class="h5"><a class="nav-link active" href="/modulesCourse/filterModules/Software">Software</a></p>
+            {{else}}
+                <p class="h5"><a class="nav-link" href="/modulesCourse/filterModules/Software">Software</a></p>
+            {{/if}}
+            
+        </li>
+        <li class="nav-item">
+            {{#if dudas}}
+                <p class="h5"><a class="nav-link active" href="/modulesCourse/filterModules/Dudas">Dudas</a></p>
+            {{else}}
+                <p class="h5"><a class="nav-link" href="/modulesCourse/filterModules/Dudas">Dudas</a></p>
+            {{/if}}
+        </li>
+    </ul>
+
+    <div class="row mb-3 mt-3">
         {{#each modules}}
         <div class="col-3 mb-3">
             <div class="card border border-3">
                 <img src="{{img}}" class="card-img-top" alt="" width="75" height="175">
                 <div class="card-body">
-                    <h5 class="card-title">{{nameModule}}</h5>
+                    <h5 class="card-title fw-bold">{{nameModule}}</h5>
+                    <h5 class="card-text">Categoría: {{category}}</h5>
                     <p class="card-text">{{descriptionModule}}</p>
                     <form action="/modulesCourse/showModule/{{id}}">
                         <div class="d-grid gap-3 col-6 mx-auto mb-2">
@@ -19,4 +46,5 @@
         {{/each}}
 
     </div>
+
 </div>

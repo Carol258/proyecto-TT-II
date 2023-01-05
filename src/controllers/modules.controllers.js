@@ -15,6 +15,8 @@ modulesController.renderModuleForm = (req, res) => {
 }
 
 modulesController.createNewModule = async (req, res) => {
+
+    console.log(req.body);
     let urlImg;
     const nameVideos = [];
     const referenceURL = [];
@@ -23,7 +25,7 @@ modulesController.createNewModule = async (req, res) => {
     // const referenceURLsDocs = [];
     var arrDataVideos = [];
     // let documents = req.files.docs;
-    const { _id, nameModule, nameAuthor, descriptionModule } = req.body;
+    const { _id, nameModule, nameAuthor, descriptionModule, categoryModule } = req.body;
     const videos = Object.assign({}, req.files);
     let nameModuleReady = await Module.findOne({ nameModule: nameModule });
 
@@ -72,77 +74,7 @@ modulesController.createNewModule = async (req, res) => {
     });
 
 
-    // SUBIENDO DOCUMENTOS
-    // if (documents) {
-    //     if (documents.length > 1) {
-    //         documents.forEach(function (element) {
-    //             let storageRefDocs = ref(storage, `${nameModule}/${element.name}`);
-    //             let uploadDocs = uploadBytesResumable(storageRefDocs, element.data);
-    //             uploadDocs.on('state_changed',
-    //                 (snapshot) => {
-    //                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    //                     console.log('Upload is ' + progress + '% done');
-    //                     switch (snapshot.state) {
-    //                         case 'paused':
-    //                             // console.log('Upload is paused');
-    //                             break;
-    //                         case 'running':
-    //                             // console.log('Upload is running');
-    //                             break;
-    //                     }
-    //                 },
-    //                 (error) => {
-    //                     // console.log(error);
-    //                     req.flash('error_msg', 'Hubo un error, vuelva a intentelor.');
-    //                     res.redirect('/viewsAdmi/admi');
-    //                 },
-    //                 () => {
-    //                     getDownloadURL(uploadDocs.snapshot.ref).then((downloadURL) => {
-    //                         // console.log('File available at', downloadURL);
-    //                         // referenceURLsDocs.push(downloadURL);
-    //                         // nameDocs.push(element.name);
-    //                     });
-    //                 }
-    //             );
-
-
-    //         })
-    //     } else {
-    //         let storageRefDocs = ref(storage, `${nameModule}/${req.files.docs.name}`);
-    //         let uploadDocs = uploadBytesResumable(storageRefDocs, req.files.docs.data);
-
-    //         uploadDocs.on('state_changed',
-    //             (snapshot) => {
-    //                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    //                 console.log('Upload is ' + progress + '% done');
-    //                 switch (snapshot.state) {
-    //                     case 'paused':
-    //                         // console.log('Upload is paused');
-    //                         break;
-    //                     case 'running':
-    //                         // console.log('Upload is running');
-    //                         break;
-    //                 }
-    //             },
-    //             (error) => {
-    //                 // console.log(error);
-    //                 req.flash('error_msg', 'Hubo un error, vuelva a intentelor.');
-    //                 res.redirect('/viewsAdmi/admi');
-    //             },
-    //             () => {
-    //                 getDownloadURL(uploadDocs.snapshot.ref).then((downloadURL) => {
-    //                     //console.log('File available at', downloadURL);
-    //                     // referenceURLsDocs.push(downloadURL);
-    //                     // nameDocs.push(req.files.docs.name);
-    //                 });
-    //             }
-    //         );
-    //     }
-
-    // } 
-
     // SUBIENDO VIDEOS
-
 
     videos.file.forEach(function (element) {
         let storageRef = ref(storage, `${nameModule}/${decodeURIComponent(escape(element.name))}`);
@@ -188,7 +120,8 @@ modulesController.createNewModule = async (req, res) => {
                             referenceURLs: referenceURL,
                             nameVideos: nameVideos,
                             dataVideos: arrDataVideos,
-                            img: urlImg
+                            img: urlImg,
+                            category: categoryModule
                         });
                         let nuevoModulo = await newModule.save();
                         idModuloTest = nuevoModulo._id;
@@ -598,6 +531,29 @@ modulesController.updateResourcesModules = async (req, res) => {
 
 
 
+}
+
+
+// FILTRAR
+modulesController.filterModules = async (req, res) => {
+    var hardware = false;
+    var software = false;
+    var dudas = false;
+    let category = req.params.category;
+    
+    if(category == "Hardware") {
+        hardware = true
+    } else if(category == "Software") {
+        software = true
+    } else {
+        dudas = true
+    }
+    
+
+
+    const modules = await Module.find({category: req.params.category}).sort({ createdAt: 'desc' });
+    res.render('viewsUser/user', { modules, hardware, software, dudas});
+    
 }
 
 module.exports = modulesController;

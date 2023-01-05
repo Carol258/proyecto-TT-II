@@ -8,8 +8,8 @@ const Module = require('../models/Module');
 
 // PÁGINA DE INICIO DEL USUARIO
 userController.renderMainViewUser = async (req, res) => {
-    const modules = await Module.find().sort({ createdAt: 'desc' });
-    res.render('viewsUser/user', { modules });
+    const modules = await Module.find({category: "Hardware"}).sort({ createdAt: 'desc' });
+    res.render('viewsUser/user', { modules , hardware: true, software: false, dudas: false});
 }
 
 // CERRAR SESIÓN
@@ -66,6 +66,13 @@ userController.showProgress = async (req, res) => {
     const user = await User.findById(req.user._id);
     let progress = user.avances;
     res.render('viewsUser/showProgress', { progress });
+}
+
+
+
+// 
+userController.aboutCourses = (req, res) => {
+    res.render('about/aboutCourses');
 }
 
 module.exports = userController;

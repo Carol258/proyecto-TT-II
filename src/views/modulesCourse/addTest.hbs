@@ -4,8 +4,7 @@
         <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6 col-xxl-5 align-self-center">
             <h1 class="text-center mb-3 mt-2">Cuestionario del módulo</h1>
             <form action='/modulesCourse/addTest' id="formQuestions" method="POST">
-
-                <div class="d-grid gap-3 col-6 mx-auto mb-5">
+                <div class="d-grid gap-3 col-6 mx-auto mb-3">
                     <button class="btn btn-success" type="submit">Enviar</button>
                 </div>
             </form>
@@ -42,7 +41,7 @@
         var labelQuestion = document.createElement('label');
         labelQuestion.setAttribute('for', `pregunta`);
         labelQuestion.setAttribute('class', 'form-label');
-        labelQuestion.textContent = `pregunta ${number}`; 
+        labelQuestion.textContent = `Pregunta ${number}`; 
 
 
         // INPUT (PREGUNTA)
@@ -73,6 +72,40 @@
         var col4 = document.createElement('div');
         col4.setAttribute('class', 'col-3'); 
 
+
+        // INPUT GROUP
+        var inputGroupA = document.createElement('div');
+        inputGroupA.setAttribute('class', 'input-group');
+
+        var inputGroupB = document.createElement('div');
+        inputGroupB.setAttribute('class', 'input-group');
+
+        var inputGroupC = document.createElement('div');
+        inputGroupC.setAttribute('class', 'input-group');
+
+        var inputGroupD = document.createElement('div');
+        inputGroupD.setAttribute('class', 'input-group');
+
+
+        // INPUT TEXT 
+        var inputTextA = document.createElement('div');
+        inputTextA.setAttribute('class', 'input-group-text');
+        inputTextA.textContent = "A"
+
+        var inputTextB = document.createElement('div');
+        inputTextB.setAttribute('class', 'input-group-text');
+        inputTextB.textContent = "B"
+
+        var inputTextC = document.createElement('div');
+        inputTextC.setAttribute('class', 'input-group-text');
+        inputTextC.textContent = "C"
+
+        var inputTextD = document.createElement('div');
+        inputTextD.setAttribute('class', 'input-group-text');
+        inputTextD.textContent = "D"
+
+
+
         // (INPUT) RESPUESTAS
         var inputAnswer1 = document.createElement('input')
         inputAnswer1.setAttribute('type', 'text');
@@ -98,10 +131,24 @@
         inputAnswer4.setAttribute('name', `pregunta${number}`);
         inputAnswer4.setAttribute('required', "");
 
-        col1.insertAdjacentElement('beforeend',inputAnswer1);
-        col2.insertAdjacentElement('beforeend',inputAnswer2);
-        col3.insertAdjacentElement('beforeend',inputAnswer3);
-        col4.insertAdjacentElement('beforeend',inputAnswer4);
+
+        inputGroupA.insertAdjacentElement('beforeend', inputTextA);
+        inputGroupA.insertAdjacentElement('beforeend', inputAnswer1);
+
+        inputGroupB.insertAdjacentElement('beforeend', inputTextB);
+        inputGroupB.insertAdjacentElement('beforeend', inputAnswer2);
+
+        inputGroupC.insertAdjacentElement('beforeend', inputTextC);
+        inputGroupC.insertAdjacentElement('beforeend', inputAnswer3);
+
+        inputGroupD.insertAdjacentElement('beforeend', inputTextD);
+        inputGroupD.insertAdjacentElement('beforeend', inputAnswer4);
+
+
+        col1.insertAdjacentElement('beforeend',inputGroupA);
+        col2.insertAdjacentElement('beforeend',inputGroupB);
+        col3.insertAdjacentElement('beforeend',inputGroupC);
+        col4.insertAdjacentElement('beforeend',inputGroupD);
 
         row.insertAdjacentElement('beforeend', col1);
         row.insertAdjacentElement('beforeend', col2);
@@ -173,22 +220,3 @@
 </script>
 
 
-{{!-- <script>
-    let btn = document.getElementById("boton");
-    btn.onclick = add;
-    let btnEliminar = document.getElementById("botonEliminar");
-    btnEliminar.onclick = deleteE;
-
-
-    function add() {
-        const div = document.createElement("div");
-        div.textContent = "Esto es un div insertado "
-        const test = document.getElementById("test");
-        test.appendChild(div);
-    }
-    function deleteE() {
-        console.log("Delete");
-        const test = document.getElementById("test");
-        test.removeChild(test.lastElementChild);
-    }
-</script> --}}

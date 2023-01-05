@@ -1,7 +1,20 @@
 // RUTAS MÓDULO (ADMINISTRADOR)
 const { Router, application } = require("express");
 const router = Router();
-const { renderModuleForm, createNewModule, showModule, renderVideo, renderTestForm, addTest, renderTest, resultsTest, renderUpdateModule, updateModule, deleteModule, resourcesModules, updateResourcesModules, createResourcesModule } = require('../controllers/modules.controllers')
+const { renderModuleForm, 
+    createNewModule, 
+    showModule, 
+    renderVideo, 
+    renderTestForm, 
+    addTest, renderTest, 
+    resultsTest, 
+    renderUpdateModule, 
+    updateModule, 
+    deleteModule, 
+    resourcesModules, 
+    updateResourcesModules, 
+    createResourcesModule, 
+    filterModules } = require('../controllers/modules.controllers')
 const { isAuthenticated } = require('../helpers/auth');
 
 
@@ -49,7 +62,11 @@ router.get('/modulesCourse/resourcesModules', isAuthenticated, resourcesModules)
 
 router.post('/modulesCourse/createResourcesModules', isAuthenticated, createResourcesModule);
 
-router.post('/modulesCourse/updateResourcesModules/:name', isAuthenticated, updateResourcesModules)
+router.post('/modulesCourse/updateResourcesModules/:name', isAuthenticated, updateResourcesModules);
+
+
+// FILTRAR
+router.get('/modulesCourse/filterModules/:category', isAuthenticated, filterModules);
 
 
 module.exports = router;

@@ -3,19 +3,37 @@
         <h1 class="text-center">Actualizar módulo</h1>
         <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6 col-xxl-6 align-self-center">
 
-            <form action='/modulesCourse/updateModuleDone/{{module._id}}' id="hola" method="POST" enctype="multipart/form-data">
+            <form action='/modulesCourse/updateModuleDone/{{module._id}}' id="formulario" method="POST" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="nameModule" class="form-label">Nombre del módulo</label>
                     <input type="text" name="nameModule" id="nameModule" class="form-control" value="{{module.nameModule}}" required>
+                    <div class="invalid-feedback" id="invalid_message_nameModule" style="display: none">
+                        El nombre del módulo debe tener entre 4 y 40 dígitos. No puede contener puntos finales, solo números, letras y acentos.
+                    </div>
+                    <div class="valid-feedback" id="valid_message_nameModule" style="display: none">
+                        ¡Corecto!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="nameAuthor" class="form-label">Nombre del Autor</label>
                     <input type="text" name="nameAuthor" id="nameAuthor" class="form-control" value="{{module.nameAuthor}}" required>
+                    <div class="invalid-feedback" id="invalid_message_nameAuthor" style="display: none">
+                        El nombre del autor debe tener entre 4 y 30 dígitos. No puede contener puntos finales, solo letras y acentos.
+                    </div>
+                    <div class="valid-feedback" id="valid_message_nameAuthor" style="display: none">
+                        ¡Corecto!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="descriptionModule" class="form-label">Descripción del módulo</label>
-                    <textarea name="descriptionModule" id="descriptionModule" cols="30" rows="3" class="form-control"
-                        required>{{module.descriptionModule}}</textarea>
+                    <input type="textarea" name="descriptionModule" id="descriptionModule" cols="30" rows="3" class="form-control" value="{{module.descriptionModule}}"
+                        required></input>
+                    <div class="invalid-feedback" id="invalid_message_descriptionModule" style="display: none">
+                        La descripción debe tener entre 40 y 80 dígitos. No puede contener puntos finales, solo números, letras y acentos.
+                    </div>
+                    <div class="valid-feedback" id="valid_message_descriptionModule" style="display: none">
+                        ¡Corecto!
+                    </div>
                 </div>
                 <div class="mb-3" id="file" style="display: none">
                     <label for="file" class="form-label">Añadir videos del modulo</label>
@@ -45,7 +63,75 @@
 <script>
 
     const btnVideos = document.getElementById("addInputVideos");
+    const btn_actualizar = document.getElementById("updateVideos");
     btnVideos.onclick = anadirCamposVideosImagen;
+
+    // INPUTS FORMULARIO
+    const formulario = document.getElementById("formulario");
+    const inputs = document.querySelectorAll("#formulario input");
+
+    const expresiones = {
+        nombreModulo: /^[a-zA-Z0-9À-ÿ\s]{4,40}$/ ,// Letras, números y espacios, pueden llevar acentos sin punto final.
+        nombreAutor:  /^[a-zA-ZÀ-ÿ\s]{4,30}$/, // Letas y espacios, pueden llevar acentos sin punto final.
+        descripcion: /^[a-zA-Z0-9À-ÿ\s]{30,80}$/ // Letras, números, mínimo 30 dígitos sin punto final.
+    }
+
+    const campos = {
+        nameModule: false,
+        nameAuthor: false,
+        descriptionModule: false,
+    }
+
+   
+
+    const validarCampos = (e) => {
+        switch (e.target.name) {
+            case "nameModule":
+                validarInput(expresiones.nombreModulo, e.target, 'nameModule');
+                break;
+            case "nameAuthor":
+                validarInput(expresiones.nombreAutor, e.target, 'nameAuthor');
+                break;
+            case "descriptionModule":
+                validarInput(expresiones.descripcion, e.target, 'descriptionModule');
+                break;
+            
+        }
+
+         if (campos.nameModule && campos.nameAuthor && campos.descriptionModule ) {
+            btn_actualizar.disabled = false;
+        } else {
+            btn_actualizar.disabled = true;
+        }
+        
+    }
+
+    const validarInput = (expresion ,input, campo) => {
+        if (expresion.test(input.value)) {
+            document.getElementById(`${campo}`).classList.add('is-valid');
+            document.getElementById(`${campo}`).classList.remove('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "none";
+            document.getElementById(`valid_message_${campo}`).style.display = "block";
+            campos[campo] = true;
+        } else {
+            document.getElementById(`${campo}`).classList.remove('is-valid');
+            document.getElementById(`${campo}`).classList.add('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "block";
+            document.getElementById(`valid_message_${campo}`).style.display = "none";
+            campos[campo] = false;
+        }
+    }
+
+
+    /*
+        FALTA: AGREGAR VALIDACIÓN AL CAMPO DE LOS VIDEOS E IMAGEN
+    */
+
+    inputs.forEach((input) => {
+        input.addEventListener('keyup', validarCampos);
+        input.addEventListener('blur', validarCampos)
+    });
+
 
     function anadirCamposVideosImagen() {   
         var file = document.getElementById("file");
