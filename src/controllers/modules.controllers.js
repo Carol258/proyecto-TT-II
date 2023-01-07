@@ -230,6 +230,7 @@ modulesController.resultsTest = async (req, res) => {
     let promedio = 0;
     var respuestasAsertadas = 0;
 
+    console.log(req.body);
 
     for (let i = 0; i < preguntas.length; i++) {
         respuestasCorrectas.push(preguntas[i][5])
@@ -242,18 +243,20 @@ modulesController.resultsTest = async (req, res) => {
     }
 
     promedio = (respuestasAsertadas * 100) / totalPreguntas;
+    
+    
 
     if (promedio >= 80) {
         console.log(req.user);
         const user = await User.findById(req.user._id);
         let progress = user.avances;
-        let newProgress = { nameModule: nameModule, resultado: promedio };
+        let newProgress = { nameModule: nameModule, resultado: promedio.toFixed(2) };
         progress.push(newProgress);
         await User.findByIdAndUpdate(user._id, { avances: progress });
 
     }
 
-    res.render('modulesCourse/resultsTest', { totalPreguntas, respuestasAsertadas, promedio, user: req.user, nameModule });
+    res.render('modulesCourse/resultsTest', { totalPreguntas, respuestasAsertadas, promedio , user: req.user, nameModule });
 }
 
 

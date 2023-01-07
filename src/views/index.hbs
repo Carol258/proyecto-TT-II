@@ -7,11 +7,23 @@
                     en módulos sobre los tipos de mantenimiento para computadoras (preventivo y correctivo) y al
                     finalizar algunos de ellos poder realizar pequeños cuestionarios relacionados a los temas
                     explicados.</p>
+
+                {{#if (isAlum user.rol)}}
+                <a href='/viewsUser/user' class="btn btn-outline-secondary btn-lg text-white">
+                    Comenzar
+                </a>
+                {{else if (isAdmin user.rol)}}
+                <a href='/viewsAdmi/admi' class="btn btn-outline-secondary btn-lg text-white">
+                    Comenzar
+                </a>
+                {{else}}
                 <a href='/usersLogin/signin' class="btn btn-outline-secondary btn-lg text-white">
                     Comenzar
                 </a>
+                {{/if}}
+
+
             </div>
         </div>
     </div>
 </div>
-

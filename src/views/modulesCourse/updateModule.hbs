@@ -3,12 +3,15 @@
         <h1 class="text-center">Actualizar módulo</h1>
         <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6 col-xxl-6 align-self-center">
 
-            <form action='/modulesCourse/updateModuleDone/{{module._id}}' id="formulario" method="POST" enctype="multipart/form-data">
+            <form action='/modulesCourse/updateModuleDone/{{module._id}}' id="formulario" method="POST"
+                enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="nameModule" class="form-label">Nombre del módulo</label>
-                    <input type="text" name="nameModule" id="nameModule" class="form-control" value="{{module.nameModule}}" required>
+                    <input type="text" name="nameModule" id="nameModule" class="form-control"
+                        value="{{module.nameModule}}" required>
                     <div class="invalid-feedback" id="invalid_message_nameModule" style="display: none">
-                        El nombre del módulo debe tener entre 4 y 40 dígitos. No puede contener puntos finales, solo números, letras y acentos.
+                        El nombre del módulo debe tener entre 4 y 40 dígitos. No puede contener puntos finales, solo
+                        números, letras y acentos.
                     </div>
                     <div class="valid-feedback" id="valid_message_nameModule" style="display: none">
                         ¡Corecto!
@@ -16,9 +19,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="nameAuthor" class="form-label">Nombre del Autor</label>
-                    <input type="text" name="nameAuthor" id="nameAuthor" class="form-control" value="{{module.nameAuthor}}" required>
+                    <input type="text" name="nameAuthor" id="nameAuthor" class="form-control"
+                        value="{{module.nameAuthor}}" required>
                     <div class="invalid-feedback" id="invalid_message_nameAuthor" style="display: none">
-                        El nombre del autor debe tener entre 4 y 30 dígitos. No puede contener puntos finales, solo letras y acentos.
+                        El nombre del autor debe tener entre 4 y 30 dígitos. No puede contener puntos finales, solo
+                        letras y acentos.
                     </div>
                     <div class="valid-feedback" id="valid_message_nameAuthor" style="display: none">
                         ¡Corecto!
@@ -26,10 +31,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="descriptionModule" class="form-label">Descripción del módulo</label>
-                    <input type="textarea" name="descriptionModule" id="descriptionModule" cols="30" rows="3" class="form-control" value="{{module.descriptionModule}}"
-                        required></input>
+                    <input type="textarea" name="descriptionModule" id="descriptionModule" cols="30" rows="3"
+                        class="form-control" value="{{module.descriptionModule}}" required></input>
                     <div class="invalid-feedback" id="invalid_message_descriptionModule" style="display: none">
-                        La descripción debe tener entre 40 y 80 dígitos. No puede contener puntos finales, solo números, letras y acentos.
+                        La descripción debe tener entre 40 y 80 dígitos. No puede contener puntos finales, solo números,
+                        letras y acentos.
                     </div>
                     <div class="valid-feedback" id="valid_message_descriptionModule" style="display: none">
                         ¡Corecto!
@@ -37,11 +43,23 @@
                 </div>
                 <div class="mb-3" id="file" style="display: none">
                     <label for="file" class="form-label">Añadir videos del modulo</label>
-                    <input type="file" name="file" id="fileInput" class="form-control" accept="video/*" multiple >
+                    <input type="file" name="file" id="fileInput" class="form-control" accept="video/*" multiple>
+                    <div class="invalid-feedback" id="invalid_message_file" style="display: none">
+                        Debe seleccionar mínimo dos archivos (vídeos).
+                    </div>
+                    <div class="valid-feedback" id="valid_message_file" style="display: none">
+                        ¡Corecto!
+                    </div>
                 </div>
                 <div class="mb-3" id="img" style="display: none">
                     <label for="img" class="form-label">Añadir una imagen de miniatura</label>
-                    <input type="file" name="img" id="imgInput" class="form-control" accept="image/*" >
+                    <input type="file" name="img" id="imgInput" class="form-control" accept="image/*">
+                    <div class="invalid-feedback" id="invalid_message_img" style="display: none">
+                        Debe seleccionar una imagen como miniatura del módulo.
+                    </div>
+                    <div class="valid-feedback" id="valid_message_img" style="display: none">
+                        ¡Corecto!
+                    </div>
                 </div>
 
 
@@ -51,11 +69,11 @@
             </form>
 
 
-             <div class="d-grid gap-2 d-md-flex justify-content-center">
-                <button class="btn btn-primary" id="addInputVideos" >Actualizar videos e imagen</button>                
+            <div class="d-grid gap-2 d-md-flex justify-content-center">
+                <button class="btn btn-primary" id="addInputVideos">Actualizar videos e imagen</button>
             </div>
 
-           
+
         </div>
     </div>
 </div>
@@ -70,19 +88,22 @@
     const formulario = document.getElementById("formulario");
     const inputs = document.querySelectorAll("#formulario input");
 
+    var actualizarVideo = false;
+
     const expresiones = {
-        nombreModulo: /^[a-zA-Z0-9À-ÿ\s]{4,40}$/ ,// Letras, números y espacios, pueden llevar acentos sin punto final.
-        nombreAutor:  /^[a-zA-ZÀ-ÿ\s]{4,30}$/, // Letas y espacios, pueden llevar acentos sin punto final.
+        nombreModulo: /^[a-zA-Z0-9À-ÿ\s]{4,40}$/,// Letras, números y espacios, pueden llevar acentos sin punto final.
+        nombreAutor: /^[a-zA-ZÀ-ÿ\s]{4,30}$/, // Letas y espacios, pueden llevar acentos sin punto final.
         descripcion: /^[a-zA-Z0-9À-ÿ\s]{30,80}$/ // Letras, números, mínimo 30 dígitos sin punto final.
     }
 
     const campos = {
-        nameModule: false,
-        nameAuthor: false,
-        descriptionModule: false,
+        nameModule: true,
+        nameAuthor: true,
+        descriptionModule: true
+
     }
 
-   
+
 
     const validarCampos = (e) => {
         switch (e.target.name) {
@@ -95,18 +116,37 @@
             case "descriptionModule":
                 validarInput(expresiones.descripcion, e.target, 'descriptionModule');
                 break;
-            
+            case "file":
+                validarInputFile(e.target, 'file');
+                break;
+            case "img":
+                validarInputImg(e.target, 'img');
+                break;
         }
 
-         if (campos.nameModule && campos.nameAuthor && campos.descriptionModule ) {
-            btn_actualizar.disabled = false;
+
+        console.log(campos);
+
+        if (actualizarVideo) {
+            if (campos.nameModule && campos.nameAuthor && campos.descriptionModule && campos.file && campos.img) {
+                btn_actualizar.disabled = false;
+            } else {
+                btn_actualizar.disabled = true;
+            }
         } else {
-            btn_actualizar.disabled = true;
+
+            if (campos.nameModule && campos.nameAuthor && campos.descriptionModule) {
+                btn_actualizar.disabled = false;
+            } else {
+                btn_actualizar.disabled = true;
+            }
         }
-        
+
+
+
     }
 
-    const validarInput = (expresion ,input, campo) => {
+    const validarInput = (expresion, input, campo) => {
         if (expresion.test(input.value)) {
             document.getElementById(`${campo}`).classList.add('is-valid');
             document.getElementById(`${campo}`).classList.remove('is-invalid');
@@ -122,10 +162,43 @@
         }
     }
 
+    const validarInputFile = (input, campo) => {
+        if (input.files.length >= 2) {
+            document.getElementById(`${campo}`).classList.add('is-valid');
+            document.getElementById(`${campo}`).classList.remove('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "none";
+            document.getElementById(`valid_message_${campo}`).style.display = "block";
+            campos[campo] = true;
 
-    /*
-        FALTA: AGREGAR VALIDACIÓN AL CAMPO DE LOS VIDEOS E IMAGEN
-    */
+        } else if (input.files.length == 1) {
+            document.getElementById(`${campo}`).classList.remove('is-valid');
+            document.getElementById(`${campo}`).classList.add('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "block";
+            document.getElementById(`valid_message_${campo}`).style.display = "none";
+            campos[campo] = false;
+        }
+    }
+
+    const validarInputImg = (input, campo) => {
+        if (input.files.length == 1) {
+            document.getElementById(`${campo}`).classList.add('is-valid');
+            document.getElementById(`${campo}`).classList.remove('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "none";
+            document.getElementById(`valid_message_${campo}`).style.display = "block";
+            campos[campo] = true;
+
+        } else if (input.files.length != 1) {
+            document.getElementById(`${campo}`).classList.remove('is-valid');
+            document.getElementById(`${campo}`).classList.add('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "block";
+            document.getElementById(`valid_message_${campo}`).style.display = "none";
+            campos[campo] = false;
+        }
+    }
+
+
+
+
 
     inputs.forEach((input) => {
         input.addEventListener('keyup', validarCampos);
@@ -133,26 +206,52 @@
     });
 
 
-    function anadirCamposVideosImagen() {   
+
+
+    function anadirCamposVideosImagen() {
         var file = document.getElementById("file");
         var img = document.getElementById("img");
         var fileInput = document.getElementById("fileInput");
         var imgInput = document.getElementById("imgInput");
 
-        if(file.style.display === 'none' && img.style.display === 'none') {
+        if (file.style.display === 'none' && img.style.display === 'none') {
             file.style.display = 'block';
             img.style.display = 'block';
-            // console.log(fileInput.value);
-            // console.log(imgInput.value);
-            btnVideos.textContent = "No actualizar videos";
+            fileInput.setAttribute('required', '');
+            imgInput.setAttribute('required', '');
+
+
+            btnVideos.classList.add('btn-danger');
+            btnVideos.classList.remove('btn-primary');
+
+            btnVideos.textContent = "No actualizar vídeos e imagen";
+            btn_actualizar.disabled = true;
+            campos['file'] = false;
+            campos['img'] = false;
+            actualizarVideo = true;
+
+            console.log(campos);
+
         } else {
             file.style.display = 'none';
             img.style.display = 'none';
-            // console.log(fileInput.value);
-            // console.log(imgInput.value);
             fileInput.value = "";
             imgInput.value = ""
-            btnVideos.textContent = "Actualizar videos e imagen";
+            fileInput.removeAttribute('required', '');
+            imgInput.removeAttribute('required', '');
+
+            btnVideos.classList.remove('btn-danger');
+            btnVideos.classList.add('btn-primary');
+
+            btnVideos.textContent = "Actualizar vídeos e imagen"
+            if (campos.nameModule && campos.nameAuthor && campos.descriptionModule) {
+                btn_actualizar.disabled = false;
+            }
+            delete campos['file'];
+            delete campos['img'];
+            actualizarVideo = false;
+
+            console.log(campos);
         }
     }
 

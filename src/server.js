@@ -43,6 +43,12 @@ app.engine('.hbs', exphbs.engine({
         },
         'eliminarEspacios': function(nombre) {
             return nombre.replace(/\s+/g, '');
+        },
+        'eliminarPuntoFinal': function(nombreVideo) {
+            return nombreVideo.replace('.mp4', '');
+        },
+        'promedioDecimales': function(promedio) {
+            return promedio.toFixed(2);
         }
     }
 }));
