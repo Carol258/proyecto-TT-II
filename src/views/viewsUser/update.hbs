@@ -2,31 +2,144 @@
     <div class="row justify-content-center">
         <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6 col-xxl-5 align-self-center">
             <h1 class="text-center mb-3 mt-2">Actualizar Datos</h1>
-            <form action="/viewsUser/update/{{user._id}}?_method=PUT" method="POST">
+            <form action="/viewsUser/update/{{user._id}}?_method=PUT" method="POST" id="formUpdateData">
                 <div class="mb-3">
                     <label for="emailUser" class="form-label">Email</label>
-                    <input type="text" name="emailUser" id="emailUser" class="form-control" value="{{user.email}}" disabled>
+                    <input type="text" name="emailUser" id="emailUser" class="form-control" value="{{user.email}}"
+                        disabled>
                 </div>
                 <div class="mb-3">
-                    <label for="nameUser" class="form-label">Nombre</label>
-                    <input type="text" name="nameUser" id="nameUser" class="form-control" value="{{user.name}}" required>
+                    <label for="name" class="form-label">Nombre(s)</label>
+                    <input type="text" name="name" id="name" class="form-control" value="{{user.name}}"
+                        required>
+                    <div class="invalid-feedback" id="invalid_message_name" style="display: none">
+                        Solo se puede ingresar letras minúsculas y mayúsculas con o sin acentos.
+                    </div>
+                    <div class="valid-feedback" id="valid_message_name" style="display: none">
+                        ¡Corecto!
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="surnameUser" class="form-label">Apellido</label>
-                    <input type="text" name="surnameUser" id="surnameUser" class="form-control" value="{{user.surname}}" required>
+                    <label for="surname" class="form-label">Apellidos</label>
+                    <input type="text" name="surname" id="surname" class="form-control" value="{{user.surname}}"
+                        required>
+                    <div class="invalid-feedback" id="invalid_message_surname" style="display: none">
+                        Solo se puede ingresar letras minúsculas y mayúsculas con o sin acentos.
+                    </div>
+                    <div class="valid-feedback" id="valid_message_surname" style="display: none">
+                        ¡Corecto!
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="passwordUser" class="form-label">Actualizar Contraseña</label>
-                    <input type="password" name="passwordUser" id="passwordUser" class="form-control" required>
+                    <label for="password" class="form-label">Actualizar Contraseña</label>
+                    <input type="password" name="password" id="password" class="form-control" required>
+                    <div class="invalid-feedback" id="invalid_message_password" style="display: none">
+                        La contraseña debe tener entre 4 y 12 caracteres que pueden ser letras y números.
+                    </div>
+                    <div class="valid-feedback" id="valid_message_password" style="display: none">
+                        ¡Corecto!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="confirm_password" class="form-label">Confirmar Contraseña</label>
                     <input type="password" name="confirm_password" id="confirm_password" class="form-control" required>
+                    <div class="invalid-feedback" id="invalid_message_confirm_password" style="display: none">
+                        Ambas contraseñas deben coincidir.
+                    </div>
+                    <div class="valid-feedback" id="valid_message_confirm_password" style="display: none">
+                        ¡Corecto!
+                    </div>
                 </div>
                 <div class="d-grid gap-3 col-6 mx-auto mb-4">
-                    <button class="btn btn-success" type="submit">Actualizar Datos</button>
+                    <button id="btnUpdate" class="btn btn-success" type="submit" disabled>Actualizar Datos</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
+<script>
+
+    const btnUpdateData = document.getElementById("btnUpdate");
+    const formUpdateData = document.getElementById("formUpdateData");
+    const inputs = document.querySelectorAll("#formUpdateData input");
+
+    const campos = {
+        name: true,
+        surname: true,
+        password: false
+    }
+
+    const expresiones = {
+        nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
+        password: /^.{4,12}$/, // 4 a 12 digitos.
+        correo: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+    }
+
+    const validarFormulario = (e) => {
+        switch (e.target.name) {
+            case "name":
+                validarInput(expresiones.nombre, e.target, 'name');
+                break;
+            case "surname":
+                validarInput(expresiones.nombre, e.target, 'surname');
+                break;
+            case "password":
+                validarInput(expresiones.password, e.target, 'password');
+                validarPassword2();
+                break;
+            case "confirm_password":
+                validarPassword2();
+                break;
+        }
+
+        if(campos.name && campos.surname && campos.password) {
+            btnUpdateData.disabled = false;
+        } else {
+            btnUpdateData.disabled = true;
+        }
+    }
+
+    const validarInput = (expresion, input, campo) => {
+        
+        if (expresion.test(input.value)) {
+            document.getElementById(`${campo}`).classList.add('is-valid');
+            document.getElementById(`${campo}`).classList.remove('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "none";
+            document.getElementById(`valid_message_${campo}`).style.display = "block";
+            campos[campo] = true;
+        } else {
+            document.getElementById(`${campo}`).classList.remove('is-valid');
+            document.getElementById(`${campo}`).classList.add('is-invalid');
+            document.getElementById(`invalid_message_${campo}`).style.display = "block";
+            document.getElementById(`valid_message_${campo}`).style.display = "none";
+            campos[campo] = false;
+        }
+    }
+
+    const validarPassword2 = () => {
+        const inputPassword1 = document.getElementById('password');
+        const inputPassword2 = document.getElementById('confirm_password');
+
+        if (inputPassword1.value !== inputPassword2.value) {
+            document.getElementById(`confirm_password`).classList.remove('is-valid');
+            document.getElementById(`confirm_password`).classList.add('is-invalid');
+            document.getElementById(`invalid_message_confirm_password`).style.display = "block";
+            document.getElementById(`valid_message_confirm_password`).style.display = "none";
+            campos['password'] = false;
+        } else {
+            document.getElementById(`confirm_password`).classList.add('is-valid');
+            document.getElementById(`confirm_password`).classList.remove('is-invalid');
+            document.getElementById(`invalid_message_confirm_password`).style.display = "none";
+            document.getElementById(`valid_message_confirm_password`).style.display = "block";
+            campos['password'] = true;
+        }
+    }
+
+    inputs.forEach((input) => {
+        input.addEventListener('keyup', validarFormulario);
+        input.addEventListener('blur', validarFormulario)
+    });
+
+</script>

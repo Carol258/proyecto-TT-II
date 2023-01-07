@@ -6,12 +6,12 @@
 
             <form action="/modulesCourse/results" method="POST" class="mx-5">
                 {{#each preguntas}}
-                <h3 class=" mb-3 mt-2">{{this.[0]}}</h3>
+                <h3 class=" mb-3 mt-2">{{@index }} - {{this.[0]}}</h3>
                 <div class="row my-4">
-                    <div class="col"><label class="form-label">A&#41; {{this.[1]}}</label></div>
-                    <div class="col"><label class="form-label">B&#41; {{this.[2]}}</label></div>
-                    <div class="col"><label class="form-label">C&#41; {{this.[3]}}</label></div>
-                    <div class="col"><label class="form-label">D&#41; {{this.[4]}}</label></div>
+                    <div class="col"><label class="form-label h6 text-primary">A&#41; {{this.[1]}}</label></div>
+                    <div class="col"><label class="form-label h6 text-primary">B&#41; {{this.[2]}}</label></div>
+                    <div class="col"><label class="form-label h6 text-primary">C&#41; {{this.[3]}}</label></div>
+                    <div class="col"><label class="form-label h6 text-primary">D&#41; {{this.[4]}}</label></div>
                 </div>
 
                 <div class="form-floating">
