@@ -30,33 +30,7 @@ userController.renderUpdateForm = (req, res) => {
 }
 
 userController.updateUser = async (req, res) => {
-    // const errors = []
     const { name, surname, password } = req.body;
-
-    // if (password != confirm_password) {
-    //     errors.push({ text: 'Las contraseñas no coinciden.' });
-    // }
-    // if (password.length < 4) {
-    //     errors.push({ text: 'La contraseña debe tener más de 4 caracteres.' });
-    // }
-
-    // if (errors.length > 0) {
-    //     return res.render('viewsUser/update', {
-    //         errors,
-    //         nameUser,
-    //         surnameUser,
-    //         email,
-    //         passwordUser,
-    //         confirm_password
-    //     });
-    // } else {
-    //     const salt = await brcrypt.genSalt(10);
-    //     const encryptPassword = await brcrypt.hash(passwordUser, salt);
-    //     await User.findByIdAndUpdate(req.params.id, { name: nameUser, surname: surnameUser, password: encryptPassword });
-    //     req.flash('success_msg', 'Usuario actualizado exitosamente.');
-    //     console.log(req.user);
-    //     res.redirect('/viewsUser/user');
-    // }
 
     const salt = await brcrypt.genSalt(10);
     const encryptPassword = await brcrypt.hash(password, salt);
