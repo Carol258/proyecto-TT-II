@@ -16,21 +16,16 @@ modulesController.renderModuleForm = (req, res) => {
 
 modulesController.createNewModule = async (req, res) => {
 
-    console.log(req.body);
     let urlImg;
     const nameVideos = [];
     const referenceURL = [];
     const datosVideos = {};
-    // let nameDocs = [];
-    // const referenceURLsDocs = [];
     var arrDataVideos = [];
-    // let documents = req.files.docs;
     const { _id, nameModule, nameAuthor, descriptionModule, categoryModule } = req.body;
     const videos = Object.assign({}, req.files);
     let nameModuleReady = await Module.findOne({ nameModule: nameModule });
 
     if (nameModuleReady) {
-        console.log("Nombre OCUPADO");
         req.flash('error_msg', 'El nombre del módulo ya se encuentra en uso, por favor use otro nombre.');
         res.redirect('/modulesCourse/add');
     }
@@ -54,7 +49,6 @@ modulesController.createNewModule = async (req, res) => {
             }
         },
         (error) => {
-            // console.log(error);
             req.flash('error_msg', 'Hubo un error, vuelva a intentelor.');
             res.redirect('/viewsAdmi/admi');
         },
@@ -67,7 +61,6 @@ modulesController.createNewModule = async (req, res) => {
     );
 
 
-
     videos.file.forEach(function (element) {
         console.log(decodeURIComponent(escape(element.name)));
         nameVideos.push(decodeURIComponent(escape(element.name)));
@@ -75,7 +68,6 @@ modulesController.createNewModule = async (req, res) => {
 
 
     // SUBIENDO VIDEOS
-
     videos.file.forEach(function (element) {
         let storageRef = ref(storage, `${nameModule}/${decodeURIComponent(escape(element.name))}`);
         let uploadTask = uploadBytesResumable(storageRef, element.data);
@@ -93,7 +85,6 @@ modulesController.createNewModule = async (req, res) => {
             }
         },
             (error) => {
-                // console.log(error);
                 req.flash('error_msg', 'Hubo un error, vuelva a intentelor.');
                 res.redirect('/viewsAdmi/admi');
             },
@@ -101,16 +92,12 @@ modulesController.createNewModule = async (req, res) => {
                 getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
                     console.log('File available at', downloadURL);
                     referenceURL.push(downloadURL);
-                    //nameVideos.push(`${element.name}`);
                     datosVideos[`${decodeURIComponent(escape(element.name))}`] = downloadURL
 
                     if (referenceURL.length == videos.file.length) {
                         // INSERTANDO DATOS
                         arrDataVideos = Object.entries(datosVideos);
-
                         arrDataVideos.sort();
-                        //nameVideos.sort();
-
 
                         const newModule = new Module({
                             id: _id,
@@ -125,7 +112,6 @@ modulesController.createNewModule = async (req, res) => {
                         });
                         let nuevoModulo = await newModule.save();
                         idModuloTest = nuevoModulo._id;
-
 
                         if (req.body.cuestionario) {
                             req.flash('success_msg', 'Módulo cargado, ahora puede añadir un cuestionario.');
@@ -168,15 +154,12 @@ modulesController.showModule = async (req, res) => {
     let datosPDF = Object.assign({}, resourcesModules);
 
     idModulo = req.params.id;
-    console.log(module)
     let nameVideos = module.nameVideos;
     let urls = module.referenceURLs;
     let data = Object.fromEntries(module.dataVideos);
     let test = module.test;
 
-    let url = data[`${nameVideos[0]}`]
-    // let docs = module.referenceURLsDocs;
-    // let nameDocs = module.nameDocs;
+    let url = data[`${nameVideos[0]}`];
 
     if(resourcesModules.length != 0) {
         res.render('modulesCourse/showModule', { name: req.params.name, links: url, nameVideos, id: req.params.id, test, resourcesModule: true, urlSource: datosPDF['0'].resourceURL });
@@ -196,8 +179,6 @@ modulesController.renderVideo = async (req, res) => {
     let data = Object.fromEntries(module.dataVideos);
     let url = data[`${req.params.name}`];
     let test = module.test;
-    // let docs = module.referenceURLsDocs;
-    // let nameDocs = module.nameDocs;
 
     if(resourcesModules.length != 0) {
         res.render('modulesCourse/renderVideo', { nameVideos, id: idModulo, url, test, resourcesModule: true, urlSource: datosPDF['0'].resourceURL });
@@ -230,8 +211,6 @@ modulesController.resultsTest = async (req, res) => {
     let promedio = 0;
     var respuestasAsertadas = 0;
 
-    console.log(req.body);
-
     for (let i = 0; i < preguntas.length; i++) {
         respuestasCorrectas.push(preguntas[i][5])
     }
@@ -244,10 +223,7 @@ modulesController.resultsTest = async (req, res) => {
 
     promedio = (respuestasAsertadas * 100) / totalPreguntas;
     
-    
-
     if (promedio >= 80) {
-        console.log(req.user);
         const user = await User.findById(req.user._id);
         let progress = user.avances;
         let newProgress = { nameModule: nameModule, resultado: promedio.toFixed(2) };
@@ -315,7 +291,6 @@ modulesController.updateModule = async (req, res) => {
                 }
             },
             (error) => {
-                // console.log(error);
                 req.flash('success_msg', 'Actualizado');
                 res.redirect('/viewsAdmi/admi');
             },
@@ -348,7 +323,6 @@ modulesController.updateModule = async (req, res) => {
                 }
             },
                 (error) => {
-                    // console.log(error);
                     req.flash('success_msg', 'Actualizado');
                     res.redirect('/viewsAdmi/admi');
                 },
@@ -375,7 +349,6 @@ modulesController.updateModule = async (req, res) => {
                                     dataVideos: arrDataVideos,
                                     img: urlImg
                                 });
-                            // console.log(newModule);
                             req.flash('success_msg', 'Actualizado');
                             res.redirect('/viewsAdmi/admi');
                         }
@@ -456,9 +429,7 @@ modulesController.createResourcesModule = async (req, res) => {
                         resourceURL: downloadURL
                     });
 
-
                     await newResource.save();
-
 
                 req.flash('success_msg', `Archivo ${req.files.pdf.name} subido correctamente.`);
                 res.redirect('/modulesCourse/resourcesModules');
@@ -531,9 +502,6 @@ modulesController.updateResourcesModules = async (req, res) => {
         }
     );
 
-
-
-
 }
 
 
@@ -552,12 +520,12 @@ modulesController.filterModules = async (req, res) => {
         dudas = true
     }
     
-
-
     const modules = await Module.find({category: req.params.category}).sort({ createdAt: 'desc' });
     res.render('viewsUser/user', { modules, hardware, software, dudas});
     
 }
+
+
 
 module.exports = modulesController;
 
